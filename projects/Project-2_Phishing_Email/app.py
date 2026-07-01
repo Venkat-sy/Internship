@@ -9,7 +9,7 @@ st.set_page_config(page_title="Phishing Email Detector", page_icon="📧")
 
 @st.cache_resource
 def load_model():
-    path = "phishing_emails.csv"
+    path = os.path.join(os.path.dirname(__file__), "phishing_emails.csv")
     if not os.path.exists(path):
         return None, None
     data = pd.read_csv(path)
