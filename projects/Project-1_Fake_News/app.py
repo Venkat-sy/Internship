@@ -5,8 +5,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import os
 
-st.set_page_config(page_title="Fake News Detector", page_icon="📰")
-
 @st.cache_resource
 def load_model():
     path = os.path.join(os.path.dirname(__file__), "fake_news_train.csv")
