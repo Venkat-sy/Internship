@@ -12,24 +12,34 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
+import random
+
 def create_dummy_data(filepath="phishing_emails.csv"):
-    print(f"Dataset not found. Creating a synthetic dataset at {filepath} for demonstration...")
-    data = {
-        'email_text': [
-            "Dear Customer, your account has been suspended. Please click here to verify.",
-            "Hey John, are we still on for lunch tomorrow?",
-            "URGENT: You have won a $1000 Walmart gift card! Claim now by replying.",
-            "Please find attached the meeting notes from yesterday's sync.",
-            "Your password will expire in 24 hours. Click this link to reset it.",
-            "Don't forget to submit your timesheet by Friday.",
-            "Exclusive offer: Get 80% off on all luxury watches!",
-            "Hi team, just a reminder about the all-hands meeting at 2 PM.",
-            "Verify your bank details immediately to avoid account closure.",
-            "Happy birthday! Hope you have a wonderful day."
-        ] * 50, # 500 samples
-        'label': [1, 0, 1, 0, 1, 0, 1, 0, 1, 0] * 50  # 1 for Phishing, 0 for Legitimate
-    }
-    df = pd.DataFrame(data)
+    print(f"Dataset not found. Creating an enhanced synthetic dataset at {filepath}...")
+    
+    legit_subjects = ["Hey", "Meeting", "Project update", "Lunch", "Quick question", "Reminder", "Invoice", "Schedule"]
+    legit_bodies = ["are we still on for tomorrow?", "please find attached the document.", "let's sync up later.", "don't forget the deadline.", "can you review this?", "hope you are doing well.", "thanks for your help.", "see you at 2 PM."]
+    
+    phishing_subjects = ["URGENT", "Action Required", "Account Suspended", "Security Alert", "You won!", "Claim your prize", "Final Notice"]
+    phishing_bodies = ["click here to verify your identity.", "your password expires in 24 hours.", "claim your $1000 gift card now.", "login immediately to avoid closure.", "we detected suspicious activity.", "download this attachment to view.", "send payment to this address."]
+    
+    data_text = []
+    data_label = []
+    
+    # Generate 500 Legitimate Emails
+    for _ in range(500):
+        email = f"{random.choice(legit_subjects)} - {random.choice(legit_bodies)}"
+        data_text.append(email)
+        data_label.append(0)
+        
+    # Generate 500 Phishing Emails
+    for _ in range(500):
+        email = f"{random.choice(phishing_subjects)}: {random.choice(phishing_bodies)}"
+        data_text.append(email)
+        data_label.append(1)
+        
+    df = pd.DataFrame({'email_text': data_text, 'label': data_label})
+    df = df.sample(frac=1, random_state=42).reset_index(drop=True)
     df.to_csv(filepath, index=False)
     return df
 
@@ -44,8 +54,9 @@ def clean_email(text):
 
 def main():
     dataset_path = "phishing_emails.csv"
-    if not os.path.exists(dataset_path):
-        create_dummy_data(dataset_path)
+    if os.path.exists(dataset_path):
+        os.remove(dataset_path)
+    create_dummy_data(dataset_path)
         
     print("Loading dataset...")
     data = pd.read_csv(dataset_path)
@@ -60,8 +71,8 @@ def main():
     X = data['clean_text']
     y = data['label']
     
-    print("Extracting features (TF-IDF)...")
-    vectorizer = TfidfVectorizer(max_features=3000, stop_words='english')
+    print("Extracting features (TF-IDF with Char N-Grams)...")
+    vectorizer = TfidfVectorizer(max_features=3000, analyzer='char_wb', ngram_range=(3, 5))
     X_vec = vectorizer.fit_transform(X)
     
     X_train, X_test, y_train, y_test = train_test_split(X_vec, y, test_size=0.2, random_state=42)

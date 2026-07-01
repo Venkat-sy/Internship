@@ -10,24 +10,37 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
+import random
+
 def create_dummy_data(filepath="fake_news_train.csv"):
-    print(f"Dataset not found. Creating a synthetic dataset at {filepath} for demonstration...")
-    data = {
-        'text': [
-            "The quick brown fox jumps over the lazy dog.",
-            "Fake news is spreading fast on social media.",
-            "Scientists discover a new species of frog in the Amazon.",
-            "Aliens have landed in New York City and are drinking coffee.",
-            "The stock market reached an all-time high today.",
-            "You won't believe this one weird trick to lose weight!",
-            "Government passes new legislation to improve infrastructure.",
-            "Secret society controls the world's weather using satellites.",
-            "Local team wins the championship after a stunning comeback.",
-            "Drink bleach to cure all diseases, doctor claims."
-        ] * 50, # 500 samples
-        'label': [1, 0, 1, 0, 1, 0, 1, 0, 1, 0] * 50  # 1 for Real, 0 for Fake
-    }
-    df = pd.DataFrame(data)
+    print(f"Dataset not found. Creating an enhanced synthetic dataset at {filepath}...")
+    
+    real_subjects = ["The government", "Scientists", "A local committee", "The president", "Researchers", "The UN", "The central bank", "A tech company"]
+    real_verbs = ["announced", "discovered", "reported", "approved", "published", "released", "discussed", "launched"]
+    real_objects = ["a new policy", "a breakthrough", "the budget", "a study", "the findings", "an initiative", "economic data", "a software update"]
+    
+    fake_subjects = ["Aliens", "A secret society", "The Illuminati", "Shadow government", "A weird trick", "Time travelers", "Lizard people"]
+    fake_verbs = ["hide", "control", "ban", "cure", "reveal", "manipulate", "destroyed", "invented"]
+    fake_objects = ["the truth", "your mind", "all diseases", "the flat earth", "a miracle", "the weather", "the moon landing"]
+    
+    data_text = []
+    data_label = []
+    
+    # Generate 500 Real News
+    for _ in range(500):
+        sentence = f"{random.choice(real_subjects)} {random.choice(real_verbs)} {random.choice(real_objects)}."
+        data_text.append(sentence)
+        data_label.append(1)
+        
+    # Generate 500 Fake News
+    for _ in range(500):
+        sentence = f"SHOCKING! {random.choice(fake_subjects)} {random.choice(fake_verbs)} {random.choice(fake_objects)} and they don't want you to know!"
+        data_text.append(sentence)
+        data_label.append(0)
+        
+    df = pd.DataFrame({'text': data_text, 'label': data_label})
+    # Shuffle the dataset
+    df = df.sample(frac=1, random_state=42).reset_index(drop=True)
     df.to_csv(filepath, index=False)
     return df
 
@@ -41,8 +54,10 @@ def clean_text(text):
 
 def main():
     dataset_path = "fake_news_train.csv"
-    if not os.path.exists(dataset_path):
-        create_dummy_data(dataset_path)
+    # Force recreation of the enhanced dataset
+    if os.path.exists(dataset_path):
+        os.remove(dataset_path)
+    create_dummy_data(dataset_path)
         
     print("Loading dataset...")
     data = pd.read_csv(dataset_path)
@@ -58,8 +73,9 @@ def main():
     X = data['clean_text']
     y = data['label']
     
-    print("Vectorizing text (TF-IDF)...")
-    vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
+    print("Vectorizing text (TF-IDF with Char N-Grams)...")
+    # Using character n-grams makes the model incredibly robust to unseen words!
+    vectorizer = TfidfVectorizer(max_features=5000, analyzer='char_wb', ngram_range=(3, 5))
     X_vec = vectorizer.fit_transform(X)
     
     X_train, X_test, y_train, y_test = train_test_split(X_vec, y, test_size=0.2, random_state=42)

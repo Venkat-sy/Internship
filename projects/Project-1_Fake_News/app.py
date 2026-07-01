@@ -19,7 +19,7 @@ def load_model():
         return re.sub(r'\s+', ' ', text).strip()
         
     data['clean_text'] = data['text'].apply(clean_text)
-    vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
+    vectorizer = TfidfVectorizer(max_features=5000, analyzer='char_wb', ngram_range=(3, 5))
     X_vec = vectorizer.fit_transform(data['clean_text'])
     
     model = LogisticRegression(max_iter=1000)
