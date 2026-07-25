@@ -30,7 +30,7 @@
 5. **Model Training:** Fitting classifiers to learn the semantic intent (e.g., urgency, threats) from the text.
 6. **Prediction:** Deploying the best model in a web interface.
 
-*(Include the Workflow Diagram from the report here)*
+![](./workflow_diagram.png)
 
 ---
 

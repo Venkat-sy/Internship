@@ -31,7 +31,7 @@
 5. **Model Training:** Fitting classifiers to the feature vectors.
 6. **Prediction:** Deploying the best model in an interactive web interface.
 
-*(Include the Workflow Diagram from the report here)*
+![](../workflow_diagram.png)
 
 ---
 
