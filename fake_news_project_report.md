@@ -56,22 +56,25 @@ Experimental results show that all models achieve exceptional performance on the
 ### 3.1 What is Fake News?
 Fake news refers to false, misleading, or fabricated information that is presented as legitimate news content. It is often created with the intent to deceive readers, manipulate public opinion, generate advertising revenue through sensational content, or damage the reputation of an individual, organization, or institution. Fake news can take several forms, including entirely fabricated stories, manipulated or out-of-context facts, misleading headlines (clickbait), satire misinterpreted as fact, and biased or one-sided reporting disguised as objective journalism.
 
-With the proliferation of social media platforms such as Facebook, X (formerly Twitter), and WhatsApp, news no longer travels solely through verified editorial channels. Anyone can create and share content instantly. Furthermore, algorithms that prioritize engagement often amplify sensational or emotionally charged fake news faster than accurate, measured reporting. This has created an environment where misinformation can spread to millions of users within hours, long before fact-checkers can respond.
+Historically, misinformation was limited by the speed of traditional publishing and broadcasting. However, the modern digital landscape has fundamentally altered this dynamic. With the proliferation of social media platforms such as Facebook, X (formerly Twitter), and WhatsApp, news no longer travels solely through verified editorial channels. Anyone with an internet connection can create and share content instantly to a global audience. Furthermore, recommendation algorithms designed by these platforms prioritize user engagement—likes, shares, and comments. These algorithms often inadvertently amplify sensational, emotionally charged, or controversial fake news much faster than accurate, measured reporting. This has created an environment where misinformation can spread to millions of users within hours, long before professional fact-checkers can respond or issue corrections.
+
+The architecture of social networks also fosters echo chambers and filter bubbles, where users are repeatedly exposed to information that aligns with their preexisting beliefs. In these enclosed network topologies, fake news is rarely challenged, and its repeated exposure increases its perceived credibility through the illusory truth effect.
 
 ### 3.2 Impact of Fake News
-* **Erosion of public trust** in media institutions, journalists, and democratic processes.
-* **Influence on elections** and political discourse through targeted disinformation campaigns.
-* **Public health risks**, such as the spread of medical misinformation during pandemics.
-* **Financial market manipulation** through fabricated corporate or economic news.
-* **Incitement of social unrest**, communal tension, and mob violence in extreme cases.
-* **Damage to the reputation** of individuals, brands, and organizations.
+The consequences of unchecked fake news are far-reaching and deeply damaging to society across multiple domains:
+* **Erosion of Public Trust:** Widespread dissemination of fabricated stories creates a climate of skepticism where citizens struggle to differentiate between credible journalism and propaganda, ultimately eroding trust in media institutions and democratic processes.
+* **Influence on Elections:** Disinformation campaigns, often orchestrated by state-sponsored actors or politically motivated groups, are used to manipulate voter behavior, suppress voter turnout, or illegitimately sway the outcome of democratic elections.
+* **Public Health Crises:** During global pandemics, such as COVID-19, the rapid spread of medical misinformation and conspiracy theories regarding vaccines and treatments directly contributed to loss of life and hindered public health responses.
+* **Financial Market Manipulation:** Fabricated corporate press releases or economic news can cause flash crashes in the stock market or artificially inflate stock prices, leading to severe financial losses for investors.
+* **Incitement of Violence:** In extreme cases, hyper-localized fake news spread through encrypted messaging apps has incited social unrest, communal tension, and mob violence, resulting in tragic real-world casualties.
 
 ### 3.3 Need for Artificial Intelligence in Fake News Detection
-Manual fact-checking, while accurate, cannot scale to the volume and velocity of content generated online every day. Human fact-checkers typically take hours to days to verify a single claim, whereas misinformation can reach millions of users within minutes of being posted. This mismatch between the scale of misinformation and the capacity of manual verification creates a strong need for automated, AI-driven detection systems.
+Manual fact-checking is the traditional defense against misinformation, relying on expert journalists to verify claims against authoritative sources. However, this manual approach is inherently unscalable. Human fact-checkers typically take hours or even days to verify a single complex claim, whereas AI-generated or crowdsourced misinformation can reach millions of users within minutes. This extreme mismatch between the velocity of misinformation and the capacity of manual verification creates a critical need for automated, AI-driven detection systems.
 
-Machine Learning and Natural Language Processing techniques allow computers to analyze large volumes of text and learn linguistic, stylistic, and structural patterns that distinguish fake news from legitimate news. These patterns may include the use of sensational or emotionally charged language, exaggerated claims, inconsistent writing style, lack of credible sourcing, and specific vocabulary patterns that are statistically more common in fabricated content. By training classification models on labelled datasets, it becomes possible to build systems that can flag suspicious content automatically.
+Artificial Intelligence, encompassing Machine Learning (ML) and Natural Language Processing (NLP), provides the mathematical and computational tools required to analyze massive volumes of text at scale. While AI may struggle to verify external ground-truth facts without a knowledge base, it excels at identifying the linguistic, stylistic, and structural patterns that characterize deceptive writing. Fake news often relies on hyperbole, extreme sentiment, informal grammar, clickbait structures, and specific vocabulary patterns designed to evoke fear or outrage. By training advanced classification models on large datasets of labelled real and fake news, AI systems can automatically flag suspicious content in real-time, drastically reducing the spread of misinformation and serving as a crucial first line of defense before manual review is even necessary.
 
 ---
+
 
 ## 4. Problem Statement & Objectives
 
@@ -152,55 +155,120 @@ The dataset is perfectly balanced (50% Fake, 50% Real), which is highly favourab
 
 ## 9. Data Preprocessing
 
-Raw news text collected from online sources or generated synthetically contains significant noise. A structured preprocessing pipeline is applied to every article before feature extraction:
+Raw textual data collected from online sources, whether scraped from news websites or extracted from raw email protocols, is inherently noisy, unstructured, and teeming with extraneous artifacts. If this raw text is fed directly into a machine learning algorithm, the model will waste computational resources learning irrelevant noise (such as HTML tags or punctuation) rather than the underlying semantic patterns. Therefore, a rigorous and structured Natural Language Processing (NLP) preprocessing pipeline is applied to sanitize every document before it reaches the feature extraction stage.
 
-1. **Lowercasing:** All text is converted to lowercase to ensure that words such as "News" and "news" are treated identically.
-2. **HTML Tag Removal:** Residual HTML tags picked up during web scraping are stripped out using regular expressions.
-3. **Punctuation & Special Character Removal:** Punctuation marks and non-alphanumeric characters (., !, ?, “”, etc.) are removed as they generally do not contribute to the TF-IDF representation.
-4. **Whitespace Normalization:** Extra spaces, tabs, and newlines are stripped and compressed into single spaces.
-5. **URL & Emoji Removal:** Hyperlinks and emojis are stripped to retain clean textual content.
-6. **Tokenization & Lemmatization (Optional based on pipeline):** Breaking down the text into tokens and reducing words to their dictionary base form.
+The preprocessing pipeline executes sequentially through the following critical stages:
 
-The output of this pipeline is a cleaned, normalized string for every article, passed directly to the feature-extraction stage.
+1. **Lowercasing and Case Normalization:** 
+   In natural language, the capitalization of a word does not alter its core semantic meaning. A machine learning model, however, processes text mathematically and would interpret 'Breaking', 'BREAKING', and 'breaking' as three entirely distinct features. To prevent this artificial inflation of the feature space and to consolidate term frequencies, all text across the entire dataset is systematically converted to lowercase.
+
+2. **HTML Tag and Artifact Stripping:** 
+   Since the dataset originates from web environments, the text frequently contains residual HTML markup, such as <p>, <br>, href links, and metadata tags. These artifacts carry no linguistic value for fake news or phishing detection. A regular expression (Regex) engine is utilized to scan the text corpus and definitively strip all text enclosed within angle brackets, ensuring only human-readable content remains.
+
+3. **Punctuation and Special Character Removal:** 
+   Punctuation marks (periods, commas, exclamation points, question marks) and special characters ($, %, @, &) serve grammatical purposes but generally do not assist a bag-of-words or TF-IDF model in classification tasks. In fact, they often attach themselves to the end of words (e.g., 'urgent!'), preventing the token 'urgent' from matching with other instances of the same word. All non-alphanumeric characters are stripped from the dataset, leaving only clean alphabetical sequences.
+
+4. **Whitespace Normalization:** 
+   Web scraping often introduces erratic spacing, including double spaces, tab characters (	), and excessive newline returns (
+). If left unaddressed, these can interfere with tokenization algorithms. A secondary regex operation compresses all contiguous whitespace characters into a single standard space, ensuring uniformity across all documents.
+
+5. **URL, Hyperlink, and Emoji Scrubbing:** 
+   While the presence of a malicious URL is a strong indicator of phishing, the actual textual structure of the URL string itself acts as noise when analyzing the *semantic intent* of the surrounding text. Therefore, standard regex patterns matching http://, https://, and www. are employed to excise URLs entirely. Similarly, emojis and non-ASCII unicode characters are purged to restrict the feature space strictly to standard alphabetical text.
+
+6. **Tokenization (Conceptual):** 
+   While the TF-IDF vectorizer inherently handles tokenization in the subsequent stage, the conceptual goal of this preprocessing pipeline is to prepare the text to be cleanly split into individual linguistic units (tokens/words). By stripping all adjacent punctuation and standardizing spacing, the vectorizer can accurately segment the document into a precise mathematical array.
+
+The output of this exhaustive pipeline is a perfectly sanitized, normalized, and continuous string of lowercase characters for every single article or email, ready for mathematical transformation in the feature extraction stage.
 
 ---
+
 
 ## 10. Feature Engineering
 
-### TF-IDF Vectorization with Character N-Grams
-Term Frequency-Inverse Document Frequency (TF-IDF) is used as the primary feature extraction technique. It assigns a weight to each word/token in a document that is proportional to how frequently the token appears in that document (TF) and inversely proportional to how commonly the token appears across all documents in the corpus (IDF).
+Machine learning algorithms inherently cannot comprehend raw text. They operate exclusively on numerical vectors and matrices. Feature engineering is the critical process of translating the sanitized textual data into a mathematical representation that the algorithms can process, while preserving the linguistic and structural information necessary for accurate classification.
 
-**Key Enhancement - Character N-Grams:**
-To make the model extremely robust against previously unseen words (Out-Of-Vocabulary terms), typographical errors, and novel sentence structures, the TF-IDF vectorizer was configured to use **Character N-Grams** (`analyzer='char_wb', ngram_range=(3, 5)`). 
-Instead of matching whole words, the model learns the statistical distribution of 3-to-5 character sequences (e.g., "gov", "ment", "shock"). This drastically reduces False Positives when users input entirely new legitimate text. The vocabulary size is capped at 5,000 features.
+### 10.1 Term Frequency-Inverse Document Frequency (TF-IDF)
+The primary feature extraction architecture utilized in this project is the Term Frequency-Inverse Document Frequency (TF-IDF) vectorization technique. Unlike simpler methods like Bag-of-Words (Count Vectorization) which merely tally how many times a word appears in a document, TF-IDF evaluates the true *statistical importance* of a word relative to the entire corpus.
+
+The TF-IDF score for a term is calculated as the product of two distinct metrics:
+* **Term Frequency (TF):** Measures how frequently a term occurs within a specific document. The core assumption is that if a word appears many times in an article, it is highly relevant to that specific article's context.
+* **Inverse Document Frequency (IDF):** Measures how rare or common a term is across the entire corpus of documents. Words that appear in almost every document (like 'the', 'is', 'and') carry very little discriminative power. IDF assigns a low mathematical weight to these ubiquitous terms, while assigning a massive weight penalty to rare, distinctive words that only appear in a subset of documents.
+
+By multiplying these two values, TF-IDF creates a sophisticated numerical vector where highly discriminative, context-specific words dominate the feature space, allowing the classifier to easily separate the classes.
+
+### 10.2 The Core Enhancement: Character N-Grams
+Traditional TF-IDF operates on the word level, meaning it strictly matches whole words. However, this approach is extremely vulnerable to two massive issues prevalent in malicious text:
+1. **Deliberate Obfuscation & Misspellings:** Phishing attackers frequently misspell critical words intentionally (e.g., writing 'paypa1' instead of 'paypal', or 'urgnt') specifically to evade word-based spam filters.
+2. **Out-of-Vocabulary (OOV) Terms:** If a user inputs text containing novel words the model has never seen during training, a standard word-vectorizer simply ignores them, severely crippling prediction accuracy.
+
+To solve this critical vulnerability, this project enhances the TF-IDF vectorizer by configuring it to operate on **Character N-Grams** rather than whole words. Specifically, the model is configured with nalyzer='char_wb' and 
+gram_range=(3, 5). 
+
+Instead of isolating the whole word 'urgent', the vectorizer breaks it down into statistical character sequences spanning 3 to 5 letters, such as 'urg', 'rge', 'gent'. 
+This provides a massive mathematical advantage:
+* **Resilience to Typos:** If an attacker writes 'urgnt', the model still recognizes the character sequences 'urg' and 'gnt'. The statistical overlap is high enough that the classifier still correctly identifies the malicious intent.
+* **Morphological Understanding:** Character N-Grams naturally capture prefixes and suffixes (e.g., 'ing', 'tion', 'anti'), granting the model an implicit understanding of word roots and syntax structure without requiring complex external lemmatization libraries.
+
+The vocabulary size of the TF-IDF vectorizer is capped at a maximum of 3,000 to 5,000 top features to prevent memory exhaustion and to enforce feature dimensionality reduction, ensuring the model focuses exclusively on the most statistically significant character combinations.
 
 ---
+
 
 ## 11. Machine Learning Models
 
-Four supervised classification algorithms are implemented and compared in this project.
+In this project, four supervised classification algorithms are implemented, evaluated, and compared. The objective is to determine which mathematical approach best captures the linguistic patterns indicative of deceptive text. Each algorithm operates on fundamentally different mathematical principles, providing a comprehensive evaluation of linear, probabilistic, ensemble, and non-linear neural architectures.
 
-1. **Logistic Regression (Parametric)**
-   * **Working:** A linear model that estimates the probability of a binary outcome by applying the sigmoid function to a weighted linear combination of input features.
-   * **Advantages:** Fast to train, highly interpretable, and performs exceptionally well on high-dimensional sparse data like TF-IDF vectors.
-   * **Disadvantages:** Assumes a linear decision boundary between classes.
+### 11.1 Logistic Regression (Parametric Linear Model)
+**Working Principle:**
+Logistic Regression is a foundational statistical model used for binary classification tasks. Despite its name, it is a classification algorithm rather than a regression one. It estimates the probability that a given input feature vector belongs to the positive class (e.g., Fake News or Phishing) by computing a weighted linear combination of the input features and passing the result through a logistic (sigmoid) function. The sigmoid function maps any real-valued number into a strict range between 0 and 1, representing a valid probability distribution.
+Mathematically, the hypothesis function is defined as:
+h(x) = 1 / (1 + e^-(w^T x + b))
+where w represents the learned weight vector for the TF-IDF features, x is the input feature vector, and  is the bias term. During the training phase, the algorithm optimizes these weights using Gradient Descent or solvers like L-BFGS, minimizing the Log-Loss (Binary Cross-Entropy) cost function.
 
-2. **Random Forest (Ensemble)**
-   * **Working:** An ensemble learning method that constructs a large number of decision trees during training. The final prediction is obtained by majority voting across all trees.
-   * **Advantages:** Handles non-linear relationships well, robust to noisy features, and provides a natural feature-importance ranking.
-   * **Disadvantages:** Computationally more expensive to train and less interpretable than Logistic Regression.
+**Advantages:**
+* **Extreme Efficiency:** It is computationally lightweight, meaning it can be trained on massive datasets in seconds and perform real-time inference with negligible latency.
+* **High Interpretability:** The learned weight vector w directly corresponds to feature importance. By examining the largest positive and negative weights, we can extract the exact vocabulary words that the model considers indicative of fake or legitimate content.
+* **Robustness to Sparsity:** Text data converted via TF-IDF results in highly sparse matrices (mostly zeros). Logistic Regression handles sparse, high-dimensional spaces exceptionally well without suffering from the curse of dimensionality.
 
-3. **K-Nearest Neighbors (KNN)**
-   * **Working:** A non-parametric classifier that assigns a class based on the majority vote of the 'K' closest data points in the feature space.
-   * **Advantages:** Simple to understand and requires no formal training phase (lazy learning).
-   * **Disadvantages:** Slow at inference time with large datasets due to distance calculations for every prediction.
+**Disadvantages:**
+* **Linear Decision Boundary:** The model assumes that the classes can be separated by a single linear hyperplane. It cannot inherently capture complex, non-linear relationships or multi-word semantic dependencies unless explicit polynomial features or interaction terms are engineered.
 
-4. **Simple Neural Network (Multi-Layer Perceptron)**
-   * **Working:** A feed-forward neural network consisting of an input layer, one or more hidden layers with non-linear activation functions (e.g., ReLU), and an output layer.
-   * **Advantages:** Capable of learning complex, non-linear decision boundaries and feature interactions.
-   * **Disadvantages:** Requires more training data, acts as a "black box" regarding interpretability, and is computationally intensive.
+### 11.2 Random Forest (Ensemble Learning)
+**Working Principle:**
+Random Forest is a highly powerful ensemble learning method based on the aggregation of multiple Decision Trees. Instead of relying on a single complex tree (which is highly prone to overfitting the training data), Random Forest constructs a 'forest' of hundreds of independent trees. 
+It utilizes a technique called Bootstrap Aggregating (Bagging). During training, each decision tree is trained on a random subsample of the training data (with replacement). Furthermore, at each node split within a tree, only a random subset of the TF-IDF features is considered. When a new text document is inputted for prediction, it is passed down through all the trees in the forest. Each tree casts a 'vote' for the class label, and the Random Forest outputs the majority vote as the final prediction.
+
+**Advantages:**
+* **Non-Linearity:** It naturally captures complex, non-linear interactions between words and phrases without requiring explicit feature engineering.
+* **Resilience to Overfitting:** The bagging mechanism and feature randomness ensure that the model generalizes well to unseen data, acting as a strong regularizer against the noise inherent in natural language data.
+* **Feature Importance:** It calculates Gini importance or mean decrease in impurity, allowing for structural analysis of which textual features contributed most to reducing classification error.
+
+**Disadvantages:**
+* **Computational Cost:** Training hundreds of trees on thousands of TF-IDF features is computationally intensive and requires significantly more memory than linear models.
+* **Inference Speed:** Real-time prediction is slower because the input vector must traverse every tree in the ensemble.
+* **Black Box Nature:** While feature importance is available, tracing the exact decision path for a specific prediction is convoluted, reducing the model's transparency compared to Logistic Regression.
+
+### 11.3 Naive Bayes / K-Nearest Neighbors
+Depending on the specific pipeline, either Multinomial Naive Bayes or K-Nearest Neighbors (KNN) serves as the baseline algorithmic approach.
+* **Multinomial Naive Bayes:** Based on Bayes' Theorem, this probabilistic classifier calculates the conditional probability of each class given the observed word frequencies. It makes a 'naive' assumption that every word in the document is conditionally independent of every other word, given the class label. Despite this biologically implausible assumption (as grammar dictates word dependence), Naive Bayes performs remarkably well on text classification, specifically for spam and fake news filtering, due to its ability to handle discrete word counts effectively.
+* **K-Nearest Neighbors (KNN):** KNN is a non-parametric, lazy learning algorithm. It does not possess a formal training phase where weights are optimized. Instead, it memorizes the entire training dataset. During inference, it calculates the spatial distance (typically Euclidean or Cosine similarity) between the new TF-IDF vector and all vectors in the training set. It then assigns the class label based on the majority vote of the 'K' closest neighbors. While highly intuitive, KNN suffers from extreme latency during prediction on large datasets, as it must compute distances against the entire corpus.
+
+### 11.4 Simple Neural Network (Multi-Layer Perceptron)
+**Working Principle:**
+To explore deep learning capabilities, a feed-forward Artificial Neural Network, specifically a Multi-Layer Perceptron (MLP), is utilized. The architecture consists of an input layer scaled to the exact vocabulary size of the TF-IDF vectorizer, followed by one or more fully connected hidden layers, and a final output layer.
+Each node (neuron) in the hidden layers computes a weighted sum of its inputs and applies a non-linear activation function, such as the Rectified Linear Unit (ReLU: (x) = max(0, x)). This non-linearity allows the network to learn highly abstract hierarchical representations of the text. The output layer employs a Sigmoid activation function to yield a binary probability score. The network is trained using the Backpropagation algorithm, dynamically adjusting its internal weights via an optimization algorithm like Adam to minimize the classification error over multiple iterations (epochs).
+
+**Advantages:**
+* **Supreme Flexibility:** Given sufficient data and layers, neural networks can approximate almost any continuous function, allowing them to decipher incredibly subtle and complex linguistic patterns that evade classical models.
+* **Scalability:** They benefit massively from larger datasets and can be seamlessly upgraded to more advanced architectures like LSTMs or Transformers for sequential text processing.
+
+**Disadvantages:**
+* **Data Hunger:** Neural networks require vast amounts of labelled data to converge optimally; on smaller datasets, they are highly prone to severe overfitting unless heavily regularized using Dropout or weight decay.
+* **Resource Intensive:** Training requires substantial computational power, typically necessitating GPU acceleration for efficiency.
+* **Lack of Interpretability:** They operate as a 'black box'. It is extraordinarily difficult to map a final prediction back to specific input words, making it challenging to explain the model's reasoning to end-users or compliance auditors.
 
 ---
+
 
 ## 12. Model Training
 
