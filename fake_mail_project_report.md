@@ -18,6 +18,25 @@ Roll No.: 595766
 2026
 
 ---
+# Table of Contents
+Abstract & Keywords	3
+Introduction	4
+Problem Statement & Objectives	5
+Literature Review	6
+Proposed Methodology	8
+Dataset Description	9
+Data Preprocessing	10
+Feature Engineering	11
+Machine Learning Models	12
+Model Training	15
+Results & Evaluation	16
+Feature Importance & Analysis	18
+Prediction Module	19
+Advantages, Limitations & Future Scope	20
+Conclusion	21
+References	22
+
+---
 
 ## 2. Abstract & Keywords
 
