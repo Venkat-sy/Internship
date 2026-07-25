@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head><style>body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px auto; max-width: 800px; padding: 0 20px; color: #333; } h1, h2, h3 { color: #111; } table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px; } th { background-color: #f2f2f2; }</style></head><body><h1>PPT Structure: AI-Powered Fake News Detection</h1>
+<hr />
+<h2>Slide 1: Title</h2>
+<p><strong>Title:</strong> AI-Powered Fake News Detection Using Text Classification
+<strong>Subtitle:</strong> A Machine Learning Approach to Combating Misinformation
+<strong>Presenter:</strong> Venkatesh Hebbar
+<strong>Roll No:</strong> 595766
+<strong>College:</strong> NMAM Institute of Technology</p>
+<hr />
+<h2>Slide 2: Introduction &amp; Problem Statement</h2>
+<p><strong>Introduction:</strong>
+- Fake news spreads rapidly on social media, eroding public trust and causing societal harm.
+- Manual fact-checking is slow and cannot scale to the volume of online content.</p>
+<p><strong>Problem Statement:</strong>
+- To design an automated, AI-driven system capable of classifying news articles as "Fake" or "Real" based solely on their textual content.
+- Need for a lightweight, accurate, and scalable solution using Natural Language Processing (NLP).</p>
+<hr />
+<h2>Slide 3: Methodology</h2>
+<p><strong>System Workflow:</strong>
+1. <strong>Dataset Collection:</strong> Curated dataset of 1,000 balanced Fake and Real news records.
+2. <strong>Data Preprocessing:</strong> Lowercasing, removing HTML, punctuation, URLs, emojis, and stopwords.
+3. <strong>Feature Extraction:</strong> TF-IDF Vectorization combined with Character N-Grams (3-5 chars) to handle out-of-vocabulary words.
+4. <strong>Train/Test Split:</strong> 80% Training Data, 20% Testing Data.
+5. <strong>Model Training:</strong> Fitting classifiers to the feature vectors.
+6. <strong>Prediction:</strong> Deploying the best model in an interactive web interface.</p>
+<p><em>(Include the Workflow Diagram from the report here)</em></p>
+<hr />
+<h2>Slide 4: Algorithms Used</h2>
+<p><strong>1. Logistic Regression (Parametric)</strong>
+- Fast, highly interpretable, performs well on sparse text data.
+<strong>2. Random Forest (Ensemble)</strong>
+- Robust to noise, captures non-linear patterns, provides feature importance.
+<strong>3. K-Nearest Neighbors (Instance-based)</strong>
+- Lazy learning, classifies based on proximity in feature space.
+<strong>4. Neural Network / Multi-Layer Perceptron (Deep Learning)</strong>
+- Models complex interactions between words using hidden layers and non-linear activations.</p>
+<hr />
+<h2>Slide 5: Results &amp; Performance Comparison</h2>
+<p><strong>Evaluation Metrics (Test Set):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1-Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KNN</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Logistic Regression</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Random Forest</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Neural Network</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Finding:</strong> 
+- The use of Character N-Grams made all models extremely robust. 
+- Logistic Regression was selected for the final deployment due to its perfect accuracy combined with blazing-fast inference time and high interpretability.</p>
+<p><em>(Include Confusion Matrix or Bar Chart here)</em></p>
+<hr />
+<h2>Slide 6: Demo</h2>
+<p><strong>Interactive Web Application (Streamlit)</strong>
+- <strong>Input:</strong> User pastes a news headline or article.
+- <strong>Process:</strong> The text undergoes real-time cleaning and TF-IDF transformation.
+- <strong>Output:</strong> The model predicts "FAKE NEWS" or "REAL NEWS" with a confidence score.</p>
+<p><em>(Insert Screenshots of the Streamlit App: One showing a FAKE prediction, one showing a REAL prediction)</em></p>
+<hr />
+<h2>Slide 7: Conclusion &amp; Future Scope</h2>
+<p><strong>Conclusion:</strong>
+- Successfully built an end-to-end NLP pipeline that accurately classifies text.
+- Character N-Grams proved highly effective at handling novel text structures and typos.
+- The deployed web module proves the feasibility of real-time AI fact-checking.</p>
+<p><strong>Future Scope:</strong>
+- <strong>Contextual Embeddings:</strong> Upgrade to Transformer models (BERT, RoBERTa) for deeper semantic understanding.
+- <strong>Live Fact-Checking:</strong> Integrate with Knowledge Graphs or search APIs to verify actual facts, not just textual style.
+- <strong>Browser Extension:</strong> Deploy as a Chrome extension for real-time alerts on social media.</p></body></html>

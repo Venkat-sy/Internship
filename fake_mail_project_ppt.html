@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><style>body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px auto; max-width: 800px; padding: 0 20px; color: #333; } h1, h2, h3 { color: #111; } table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px; } th { background-color: #f2f2f2; }</style></head><body><h1>PPT Structure: AI-Powered Phishing Email Detection</h1>
+<hr />
+<h2>Slide 1: Title</h2>
+<p><strong>Title:</strong> AI-Powered Phishing Email Detection Using Text Classification
+<strong>Subtitle:</strong> A Machine Learning Approach to Defending Against Cyber Threats
+<strong>Presenter:</strong> Venkatesh Hebbar
+<strong>Roll No:</strong> 595766
+<strong>College:</strong> NMAM Institute of Technology</p>
+<hr />
+<h2>Slide 2: Introduction &amp; Problem Statement</h2>
+<p><strong>Introduction:</strong>
+- Phishing is a primary vector for identity theft and corporate data breaches.
+- Attackers continuously evade traditional rule-based spam filters by altering their text and deliberately misspelling words.</p>
+<p><strong>Problem Statement:</strong>
+- To build an intelligent, automated system capable of analyzing the raw textual body of an email and determining whether it is a "Phishing" attempt or "Legitimate" communication in real-time using Natural Language Processing.</p>
+<hr />
+<h2>Slide 3: Methodology</h2>
+<p><strong>System Workflow:</strong>
+1. <strong>Dataset Collection:</strong> Curated dataset of 1,000 balanced Phishing and Legitimate emails.
+2. <strong>Data Preprocessing:</strong> Lowercasing, removing HTML tags, punctuation, URLs, and stopwords.
+3. <strong>Feature Extraction:</strong> TF-IDF Vectorization combined with Character N-Grams to catch obfuscation and misspellings.
+4. <strong>Train/Test Split:</strong> 80% Training Data, 20% Testing Data.
+5. <strong>Model Training:</strong> Fitting classifiers to learn the semantic intent (e.g., urgency, threats) from the text.
+6. <strong>Prediction:</strong> Deploying the best model in a web interface.</p>
+<p><em>(Include the Workflow Diagram from the report here)</em></p>
+<hr />
+<h2>Slide 4: Algorithms Used</h2>
+<p><strong>1. Naive Bayes (Multinomial)</strong>
+- Exceptionally fast, probabilistic classifier that performs well on text despite assuming feature independence.
+<strong>2. Logistic Regression</strong>
+- Highly interpretable linear model; excellent at isolating heavily weighted "phishing" keywords.
+<strong>3. Random Forest (Ensemble)</strong>
+- Robust to noise and capable of capturing non-linear relationships between words.
+<strong>4. Neural Network / Multi-Layer Perceptron (Deep Learning)</strong>
+- Models complex, non-linear interactions within the email text structure using hidden layers.</p>
+<hr />
+<h2>Slide 5: Results &amp; Performance Comparison</h2>
+<p><strong>Evaluation Metrics (Test Set):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1-Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Naive Bayes</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Logistic Regression</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Random Forest</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Neural Network</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Finding:</strong> 
+- The use of Character N-Grams successfully captured semantic intent, resulting in perfect classification on the test set.
+- Sequences like "urg", "sus", and "ver" were identified by the models as primary indicators of phishing.</p>
+<p><em>(Include Confusion Matrix or Feature Importance Chart here)</em></p>
+<hr />
+<h2>Slide 6: Demo</h2>
+<p><strong>Interactive Web Application (Streamlit)</strong>
+- <strong>Input:</strong> User pastes the body of a suspicious email.
+- <strong>Process:</strong> Text is cleaned, vectorized via TF-IDF, and passed to the Logistic Regression model.
+- <strong>Output:</strong> The system flags the email as "PHISHING" or "LEGITIMATE" and displays a confidence score.</p>
+<p><em>(Insert Screenshots of the Streamlit App: One showing a PHISHING prediction, one showing a LEGITIMATE prediction)</em></p>
+<hr />
+<h2>Slide 7: Conclusion &amp; Future Scope</h2>
+<p><strong>Conclusion:</strong>
+- Developed a highly accurate NLP pipeline that successfully distinguishes deceptive language from legitimate communication.
+- Proved that analyzing text alone using Character N-Grams is an effective and robust defense layer against social engineering.</p>
+<p><strong>Future Scope:</strong>
+- <strong>Hybrid System:</strong> Integrate textual NLP with meta-data analysis (checking DKIM, SPF records) for a complete defense suite.
+- <strong>Email Client Plugin:</strong> Build a browser extension or plugin for Gmail/Outlook to warn users before they click malicious links.</p></body></html>
