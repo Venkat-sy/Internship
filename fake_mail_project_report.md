@@ -1,10 +1,21 @@
 # A PROJECT REPORT ON
+
 ## AI-POWERED PHISHING EMAIL DETECTION USING TEXT CLASSIFICATION
 
-**Submitted by**
-Venkatesh Hebbar
-**Roll No.:** 595766
-**College:** NMAM Institute of Technology
+<br><br><br>
+*(Insert College Logo Here)*
+<br><br>
+
+### NMAM Institute of Technology
+
+<br><br>
+
+Submitted by
+
+**Venkatesh Hebbar**  
+Roll No.: 595766  
+
+2026
 
 ---
 
