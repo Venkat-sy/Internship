@@ -143,8 +143,6 @@ def create_pptx(title, output_filename, is_fake_news=True):
     tf = slide.shapes.placeholders[1].text_frame
     tf.text = "• The system successfully classifies raw text with near-perfect accuracy.\n• TF-IDF feature extraction is highly effective for this problem domain.\n• The Streamlit web application provides a seamless user interface for real-time predictions."
     
-    prs.save(output_filename)
-
 # Generate files directly into IICT folder
 iict_dir = "IICT"
 if not os.path.exists(iict_dir):
@@ -153,8 +151,4 @@ if not os.path.exists(iict_dir):
 create_report("AI-Powered Fake News Detection Using Text Classification", os.path.join(iict_dir, "fake_news_project_report.docx"), True)
 create_report("AI-Powered Phishing Email Detection Using Text Classification", os.path.join(iict_dir, "fake_mail_project_report.docx"), False)
 
-create_pptx("AI-Powered Fake News Detection Using Text Classification", os.path.join(iict_dir, "fake_news_project_ppt.pptx"), True)
-create_pptx("AI-Powered Phishing Email Detection Using Text Classification", os.path.join(iict_dir, "fake_mail_project_ppt.pptx"), False)
-
-
-print("Perfect reports and PPTs generated.")
+print("Perfect reports generated.")
