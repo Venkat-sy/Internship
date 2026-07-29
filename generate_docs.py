@@ -59,14 +59,47 @@ def create_report(title, output_filename, is_fake_news=True):
     run5.font.size = Pt(14)
     run5.font.color.rgb = RGBColor(31, 78, 121) # Dark Blue
     
-    run6 = p4.add_run(f'Roll No.: [{roll_no}]\n\n')
+    run6 = p4.add_run(f'Roll No.: [{roll_no}]\n')
     run6.font.size = Pt(12)
     run6.font.color.rgb = RGBColor(127, 127, 127) # Grey
+    
+    run_inst = p4.add_run('NMAM Institute Of Technology\n\n')
+    run_inst.font.size = Pt(12)
+    run_inst.font.color.rgb = RGBColor(127, 127, 127)
     
     run7 = p4.add_run('2026')
     run7.font.size = Pt(12)
     run7.font.color.rgb = RGBColor(127, 127, 127) # Grey
     
+    doc.add_page_break()
+    
+    # Table of Contents
+    doc.add_heading('Table of Contents', level=1)
+    toc_items = [
+        ("Abstract & Keywords", "3"),
+        ("Introduction", "4"),
+        ("Problem Statement & Objectives", "5"),
+        ("Literature Review", "6"),
+        ("Proposed Methodology", "8"),
+        ("Dataset Description", "9"),
+        ("Data Preprocessing", "10"),
+        ("Feature Engineering", "11"),
+        ("Machine Learning Models", "12"),
+        ("Model Training", "15"),
+        ("Results & Evaluation", "16"),
+        ("Feature Importance & Analysis", "18"),
+        ("Prediction Module", "19"),
+        ("Advantages, Limitations & Future Scope", "20"),
+        ("Conclusion", "21"),
+        ("References", "22")
+    ]
+    
+    for section, page in toc_items:
+        p_toc = doc.add_paragraph()
+        p_toc.add_run(f"{section}").bold = True
+        p_toc.add_run(f"\t\t\t{page}")
+        p_toc.paragraph_format.space_after = Pt(6)
+        
     doc.add_page_break()
     
     # Sections
